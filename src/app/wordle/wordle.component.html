@@ -2,7 +2,7 @@
     <div class="title">Variadle</div>
 
     <div class="main">
-        <div class="try-container" *ngFor="let try of tries">
+        <div class="try-container" *ngFor="let try of tries" #tryContainer>
             <div class="letter-container" *ngFor="let letter of try.letters" [class.has-text]="letter.text !== ''">
                 {{letter.text}}
             </div>
