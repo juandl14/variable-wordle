@@ -84,21 +84,68 @@
 
             .word-len-msg-container {
                 display: flex;
-                // margin: 1%;
                 position: absolute;
                 align-items: center;
-                justify-content: center;
-                // top: 0;
-                // left: 0;
-                // margin: 10% 0;
-                // z-index: 1;
             }
         }
     }
 
-    .keyboard-contianer {
-        display: flex;
-        margin-bottom: 2%;
+    .keyboard-container {
+        // display: flex;
+        margin-bottom: 12px;
+
+        .row {
+            display: flex;
+            align-items: center;
+            margin-top: 6px;
+
+            &.row1 {
+                margin-left: 23px;
+            }
+
+            &.row2 {
+                margin-left: 12px;
+            }
+        }
+
+        .key {
+            height: 58px;
+            min-width: 42px;
+            margin-right: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 4px;
+            background-color: #d3d6da;
+            font-size: 13px;
+            font-weight: bold;
+            user-select: none;
+
+            &.enter {
+                padding: 0 11px;
+                text-transform: uppercase;
+            }
+
+            &.match {
+                background-color: #6aaa64;
+                color: white;
+            }
+
+            &.partial {
+                background-color: #c9b458;
+                color: white;
+            }
+
+            &.wrong {
+                background-color: #86888a;
+                color: white;
+            }
+
+            &:hover {
+                background-color: #bbb;
+            }
+        }
     }
 
     .info-msg {

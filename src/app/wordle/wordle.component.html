@@ -10,14 +10,27 @@
             <div class="letter-container" *ngFor="let letter of try.letters"
                 [class.correct]="letter.state === LetterState.CORRECT"
                 [class.partial]="letter.state === LetterState.PARTIAL_MATCH"
-                [class.wrong]="letter.state === LetterState.WRONG" [class.has-text]="letter.text !== ''">
+                [class.wrong]="letter.state === LetterState.WRONG || (letter.state !== LetterState.CORRECT && letter.state !== LetterState.PENDING && letter.state !== LetterState.PARTIAL_MATCH)"
+                [class.has-text]="letter.text !== ''">
                 {{letter.text}}
             </div>
             <!-- </div> -->
         </div>
     </div>
 
-    <div class="keyboard-container">keyboard</div>
+    <div class="keyboard-container">
+        <div [class]="['row' + i, 'row'].join(' ')" *ngFor="let row of keyboardRows; let i = index">
+            <div *ngFor="let key of row" [class]="getKeyClass(key)" [class.enter]="key === 'Enter'"
+                (click)="handleClickKey(key)">
+                <div *ngIf="key !== 'Backspace'; else backspace">
+                    {{key}}
+                </div>
+                <ng-template #backspace>
+                    <img src="../../assets/backspace_icon.svg" />
+                </ng-template>
+            </div>
+        </div>
+    </div>
 
     <div class="info-msg" [class.show]="infoMsg !== ''" [class.fade-out]="fadeOutInfoMsg">
         {{infoMsg}}
