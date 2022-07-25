@@ -236,7 +236,13 @@ export class WordleComponent {
       await this.animateWin(letterEles);
     }
 
-    if (!this.won) {
+    // Check if run out of tries
+    if (this.numTries === this.maxTries) {
+      // Show message but don't hide
+      this.showInfoMsg('You lost! The word was: ' + this.targetWord.toUpperCase(), false);
+    }
+    // If there are tries left and didn't win, populate next row
+    else if (!this.won) {
       if (wordFromCurTry.length > this.targetWord.length) {
         this.populateNextRow('The word has less than ' + wordFromCurTry.length + ' letters');
       }
@@ -246,12 +252,6 @@ export class WordleComponent {
       else {
         this.populateNextRow('The amount of letters is correct!');
       }
-    }
-
-    // Check if run out of tries
-    if (this.numTries === this.maxTries) {
-      // Show message but don't hide
-      this.showInfoMsg('You lost! The word was: ' + this.targetWord.toUpperCase, false);
     }
 
     this.checking = false;
