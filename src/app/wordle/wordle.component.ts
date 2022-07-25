@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
 import { WORDS } from '../words';
 
 const MAX_WORD_LEN = 10;
@@ -41,7 +41,7 @@ enum LetterState {
   templateUrl: './wordle.component.html',
   styleUrls: ['./wordle.component.scss']
 })
-export class WordleComponent implements OnInit {
+export class WordleComponent {
   @ViewChildren('tryContainer') tryContainers!: QueryList<ElementRef>;
   // Stores all the tries
   // One try is one row in the UI
@@ -96,14 +96,8 @@ export class WordleComponent implements OnInit {
       }
     }
 
-    // this.targetWord = 'carnality';
-
     this.wordLen = this.targetWord.length;
     this.maxTries = this.wordLen + 1;
-
-    console.log('Target word: ', this.targetWord);
-    console.log('Wordlen: ', this.wordLen);
-    console.log('Maxtries: ', this.maxTries);
 
     // Populate initial state
     this.populateNextRow('');
@@ -115,7 +109,6 @@ export class WordleComponent implements OnInit {
       }
       this.targetWordLetterCounts[letter]++;
     }
-    console.log('Target word letter count: ', this.targetWordLetterCounts)
   }
 
   @HostListener('document:keydown', ['$event'])
@@ -137,7 +130,6 @@ export class WordleComponent implements OnInit {
         return 'key';
     }
   }
-
 
   async handleClickKey(key: string) {
     if (this.won) {
@@ -162,7 +154,6 @@ export class WordleComponent implements OnInit {
     // Handle enter
     else if (key === 'Enter') {
       const validWord = await this.checkCurrentTry();
-      console.log(validWord);
       if (!this.checking && validWord) {
         this.currLetterIndex = this.numTries * MAX_WORD_LEN;
       }
@@ -184,8 +175,7 @@ export class WordleComponent implements OnInit {
 
     // Check if the current try is a word in the list
     const wordFromCurTry = curTry.letters.map(letter => letter.text).join('').toLowerCase();
-    console.log(wordFromCurTry);
-    console.log(WORDS.includes(wordFromCurTry));
+
     if (!WORDS.includes(wordFromCurTry)) {
       this.showInfoMsg('Not in word list');
       // Shake the current row
@@ -218,7 +208,6 @@ export class WordleComponent implements OnInit {
       }
       states.push(state)
     }
-    // console.log(states);
 
     // Get the current try
     const tryContainer = this.tryContainers.get(this.numTries)?.nativeElement as HTMLElement;
@@ -240,8 +229,8 @@ export class WordleComponent implements OnInit {
 
     this.numTries++;
 
-    // Check if all letters in the current try are correct
-    if (states.every(state => state === LetterState.CORRECT)) {
+    // Check if all letters in the current try are correct and if the current try's length equals the one of the target word
+    if (states.every(state => state === LetterState.CORRECT) && curTry.letters.length === this.targetWord.length) {
       this.showInfoMsg('NICE, YOU WON!');
       this.won = true;
       await this.animateWin(letterEles);
@@ -249,13 +238,13 @@ export class WordleComponent implements OnInit {
 
     if (!this.won) {
       if (wordFromCurTry.length > this.targetWord.length) {
-        this.populateNextRow('Word has less than ' + wordFromCurTry.length + ' letters');
+        this.populateNextRow('The word has less than ' + wordFromCurTry.length + ' letters');
       }
       else if (wordFromCurTry.length < this.targetWord.length) {
-        this.populateNextRow('Word has more than ' + wordFromCurTry.length + ' letters');
+        this.populateNextRow('The word has more than ' + wordFromCurTry.length + ' letters');
       }
       else {
-        this.populateNextRow('Amount of letters is correct!');
+        this.populateNextRow('The amount of letters is correct!');
       }
     }
 
@@ -322,9 +311,6 @@ export class WordleComponent implements OnInit {
         resolve();
       }, ms)
     })
-  }
-
-  ngOnInit(): void {
   }
 
 }
