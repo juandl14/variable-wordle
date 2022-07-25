@@ -4,6 +4,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    overflow: auto;
 
     .title {
         width: 100%;
@@ -37,7 +38,7 @@
                 height: 64px;
                 border: 2px solid #ddd;
                 box-sizing: border-box;
-                margin: 5% 2px;
+                margin: 3% 2px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -72,6 +73,12 @@
 
                 &.fold {
                     transform: scaleY(0);
+                }
+
+                &.bounce {
+                    animation-name: bounce;
+                    animation-duration: 1s;
+
                 }
             }
 
@@ -152,5 +159,33 @@
     40%,
     60% {
         transform: translateX(4px);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    20% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-30px);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+
+    60% {
+        transform: translateY(-15px);
+    }
+
+    80% {
+        transform: translateY(2px);
+    }
+
+    100% {
+        transform: translateY(0);
     }
 }
